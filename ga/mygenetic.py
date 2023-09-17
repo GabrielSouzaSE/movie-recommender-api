@@ -30,21 +30,46 @@ class MyGeneticAlgorithm(Algorithm):
         self.query_search = query_search
         
 
-    
-    def evaluate(self, individual):
+    # # Do Professor
+    # def evaluate(self, individual):
 
-        if len(individual) != len(set(individual)):
-            return (0.0, )
+    #     if len(individual) != len(set(individual)):
+    #         return (0.0, )
         
-        if len(list(set(individual) - set(self.all_ids))) > 0:
-            return (0.0, )
+    #     if len(list(set(individual) - set(self.all_ids))) > 0:
+    #         return (0.0, )
         
-        ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
+    #     ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
+
+    #     if len(ratings_movies) > 0:
+    #         mean_ = np.mean([obj_.rating for obj_ in ratings_movies])
+    #     else:
+    #         mean_ = 0.0
+
+    #     return (mean_, )
+
+    def evaluate(self, individual):
+        # Verifique se o indivíduo possui IDs únicos e pertence à lista de IDs válidos
+        if len(individual) != len(set(individual)) or any(id not in self.all_ids for id in individual):
+            return (0.0,)
+
+        # Encontre as classificações dos filmes representados pelo indivíduo no banco de dados
+        ratings_movies = RatingsRepository.find_by_movieid_list(
+            self.db, individual)
 
         if len(ratings_movies) > 0:
-            mean_ = np.mean([obj_.rating for obj_ in ratings_movies])
-        else:
-            mean_ = 0.0
+            # Calcule a média das classificações
+            mean_rating = np.mean([obj.rating for obj in ratings_movies])
 
-        return (mean_, )
+            # Calcule a variância das classificações
+            variance = np.var([obj.rating for obj in ratings_movies])
+
+            # Calcule a métrica de aptidão ponderada (por exemplo, média - 0.2 * variância)
+            fitness = mean_rating - 0.2 * variance
+
+            # Retorne a métrica de aptidão em uma tupla
+            return (fitness,)
+        else:
+            # Se nenhum filme for encontrado, retorne aptidão zero
+            return (0.0,)
 
