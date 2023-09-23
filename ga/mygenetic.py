@@ -98,7 +98,7 @@ class MyGeneticAlgorithm(Algorithm):
 
     #     return (mean_rating, )
 
-    # TESTE 02(COM O CóDIGO DO CLAUDIO) -  TENTANDO UTILIZAR O USUÁRIO, O QUAL VAI ANALISAR
+    # TESTE 02(O que vai se utilizado) - TENTANDO UTILIZAR O USUÁRIO, O QUAL VAI ANALISAR
     def evaluate(self, individual):
         # Verifique se o indivíduo possui IDs únicos e pertence à lista de IDs válidos
         if len(individual) != len(set(individual)) or any(id not in self.all_ids for id in individual):
