@@ -45,31 +45,31 @@ class MyGeneticAlgorithm(Algorithm):
 
     #     return (mean_, )
 
-    #Código DO CLAUDIO
-    def evaluate(self, individual):
-        # Verifique se o indivíduo possui IDs únicos e pertence à lista de IDs válidos
-        if len(individual) != len(set(individual)) or any(id not in self.all_ids for id in individual):
-            return (0.0,)
+    # #Código DO CLAUDIO
+    # def evaluate(self, individual):
+    #     # Verifique se o indivíduo possui IDs únicos e pertence à lista de IDs válidos
+    #     if len(individual) != len(set(individual)) or any(id not in self.all_ids for id in individual):
+    #         return (0.0,)
 
-        # Encontre as classificações dos filmes representados pelo indivíduo no banco de dados
-        ratings_movies = RatingsRepository.find_by_movieid_list(
-            self.db, individual)
+    #     # Encontre as classificações dos filmes representados pelo indivíduo no banco de dados
+    #     ratings_movies = RatingsRepository.find_by_movieid_list(
+    #         self.db, individual)
 
-        if len(ratings_movies) > 0:
-            # Calcule a média das classificações
-            mean_rating = np.mean([obj.rating for obj in ratings_movies])
+    #     if len(ratings_movies) > 0:
+    #         # Calcule a média das classificações
+    #         mean_rating = np.mean([obj.rating for obj in ratings_movies])
 
-            # Calcule a variância das classificações
-            variance = np.var([obj.rating for obj in ratings_movies])
+    #         # Calcule a variância das classificações
+    #         variance = np.var([obj.rating for obj in ratings_movies])
 
-            # Calcule a métrica de aptidão ponderada (por exemplo, média - 0.2 * variância)
-            fitness = mean_rating - 0.2 * variance
+    #         # Calcule a métrica de aptidão ponderada (por exemplo, média - 0.2 * variância)
+    #         fitness = mean_rating - 0.2 * variance
 
-            # Retorne a métrica de aptidão em uma tupla
-            return (fitness,)
-        else:
-            # Se nenhum filme for encontrado, retorne aptidão zero
-            return (0.0,)
+    #         # Retorne a métrica de aptidão em uma tupla
+    #         return (fitness,)
+    #     else:
+    #         # Se nenhum filme for encontrado, retorne aptidão zero
+    #         return (0.0,)
 
     # # TESTE 01 -  TENTANDO UTILIZAR O USUÁRIO, O QUAL VAI ANALISAR
     # def evaluate(self, individual):
@@ -98,33 +98,33 @@ class MyGeneticAlgorithm(Algorithm):
 
     #     return (mean_rating, )
 
-    # # TESTE 02(COM O CóDIGO DO CLAUDIO) -  TENTANDO UTILIZAR O USUÁRIO, O QUAL VAI ANALISAR
-    # def evaluate(self, individual):
-    #     # Verifique se o indivíduo possui IDs únicos e pertence à lista de IDs válidos
-    #     if len(individual) != len(set(individual)) or any(id not in self.all_ids for id in individual):
-    #         return (0.0,)
+    # TESTE 02(COM O CóDIGO DO CLAUDIO) -  TENTANDO UTILIZAR O USUÁRIO, O QUAL VAI ANALISAR
+    def evaluate(self, individual):
+        # Verifique se o indivíduo possui IDs únicos e pertence à lista de IDs válidos
+        if len(individual) != len(set(individual)) or any(id not in self.all_ids for id in individual):
+            return (0.0,)
 
-    #     # Obtenha as avaliações do usuário identificado por self.query_search
-    #     user_ratings = RatingsRepository.find_by_userid(self.db, self.query_search)
+        # Obtenha as avaliações do usuário identificado por self.query_search
+        user_ratings = RatingsRepository.find_by_userid(self.db, self.query_search)
 
-    #     if len(user_ratings) == 0:
-    #         return (0.0,)
+        if len(user_ratings) == 0:
+            return (0.0,)
 
-    #     # Encontre as classificações dos filmes representados pelo indivíduo no banco de dados
-    #     ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
+        # Encontre as classificações dos filmes representados pelo indivíduo no banco de dados
+        ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
 
-    #     if len(ratings_movies) > 0:
-    #         # Calcule a média das classificações dos filmes representados pelo indivíduo
-    #         mean_rating = np.mean([obj.rating for obj in ratings_movies])
+        if len(ratings_movies) > 0:
+            # Calcule a média das classificações dos filmes representados pelo indivíduo
+            mean_rating = np.mean([obj.rating for obj in ratings_movies])
 
-    #         # Calcule a variância das classificações dos filmes representados pelo indivíduo
-    #         variance = np.var([obj.rating for obj in ratings_movies])
+            # Calcule a variância das classificações dos filmes representados pelo indivíduo
+            variance = np.var([obj.rating for obj in ratings_movies])
 
-    #         # Calcule a métrica de aptidão ponderada (por exemplo, média - 0.2 * variância)
-    #         fitness = mean_rating - 0.2 * variance
+            # Calcule a métrica de aptidão ponderada (por exemplo, média - 0.2 * variância)
+            fitness = mean_rating - 0.2 * variance
 
-    #         # Retorne a métrica de aptidão em uma tupla
-    #         return (fitness,)
-    #     else:
-    #         # Se nenhum filme for encontrado, retorne aptidão zero
-    #         return (0.0,)
+            # Retorne a métrica de aptidão em uma tupla
+            return (fitness,)
+        else:
+            # Se nenhum filme for encontrado, retorne aptidão zero
+            return (0.0,)
